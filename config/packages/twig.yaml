@@ -1,0 +1,7 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+
+    debug: '%kernel.debug%'
+
+    globals:
+        ga_code: 'HQWWE-123'
