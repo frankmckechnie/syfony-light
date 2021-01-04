@@ -10,3 +10,4 @@
 /node_modules/
 ###< symfony/framework-bundle ###
 /.env
+/mysql
