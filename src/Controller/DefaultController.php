@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
+use App\Entity\File;
+use App\Entity\Image;
+use App\Entity\Pdf;
 use App\Entity\User;
 use App\Services\GiftsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Repository\UserRepository;
 
 class DefaultController extends AbstractController
 {
@@ -25,9 +30,26 @@ class DefaultController extends AbstractController
      */
     public function root(GiftsService $GiftsService, Request $request, SessionInterface $session): Response
     {
+        /**
+         * @var UserRepository $repository
+         */
         $repository = $this->getDoctrine()->getRepository(User::class);
-        
-        $user1 = $repository->findWithVideos(11);
+
+        $users = $repository->findAll();
+
+        $files = $this->getDoctrine()->getRepository(File::class)->findAll();
+
+        $author = $this->getDoctrine()->getRepository(Author::class)->find(1);
+
+
+        dump($author);
+
+        // $pdfs = $this->getDoctrine()->getRepository(Pdf::class)->findAll();
+        // $images = $this->getDoctrine()->getRepository(Image::class)->findAll();
+
+        dump($files);
+
+
         // $user2 = $repository->find(2);
         // $user3 = $repository->find(3);
         // $user4 = $repository->find(4);
@@ -40,7 +62,6 @@ class DefaultController extends AbstractController
 
         // $this->getDoctrine()->getManager()->flush();;
 
-        dump($user1);
 
 
        // $users = $this->getDoctrine()->getRepository(User::class)->findall();
@@ -50,7 +71,7 @@ class DefaultController extends AbstractController
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'gifts' => $GiftsService->getGifts(),
-            'users' => [$user1],
+            'users' => $users,
         ]);
 
     }
