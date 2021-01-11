@@ -2,27 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\Author;
-use App\Entity\File;
-use App\Entity\Image;
 use App\Entity\Pdf;
+use App\Entity\File;
 use App\Entity\User;
+use App\Entity\Image;
+use App\Entity\Author;
 use App\Services\GiftsService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Services\DefaultService;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
 
-    public function __construct($logger, GiftsService $GiftsService)
+    public function __construct($logger, GiftsService $GiftsService, DefaultService $defaultService)
     {
        // $GiftsService->setGifts(['a','b','c']);
+
+       dump($defaultService);
     }
 
     /**
@@ -39,10 +42,16 @@ class DefaultController extends AbstractController
 
         $files = $this->getDoctrine()->getRepository(File::class)->findAll();
 
-        $author = $this->getDoctrine()->getRepository(Author::class)->find(1);
+        $author = $this->getDoctrine()->getRepository(Author::class)->findByIdWithPdf(3);
 
 
+       $files = $author->getFiles();
+
+       foreach($files as $file){
         dump($author);
+       }
+
+
 
         // $pdfs = $this->getDoctrine()->getRepository(Pdf::class)->findAll();
         // $images = $this->getDoctrine()->getRepository(Image::class)->findAll();
